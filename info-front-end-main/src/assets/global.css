@@ -1,0 +1,127 @@
+
+
+:root {
+    --color-primary: #4e9e47; 
+    --color-secondary: #007bff; 
+    --color-dark: #363636;
+    --color-light-bg: #f8f8f8;
+    --border-radius: 4px;
+    --spacing: 1rem;
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    line-height: 1.5;
+    background-color: #f5f5f5;
+    color: var(--color-dark);
+}
+
+.section {
+    padding: 3rem 1.5rem;
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 1rem;
+}
+
+.title {
+    font-weight: 600;
+}
+.title-h1 {
+    font-size: 2.2rem;
+    font-weight: 700;
+}
+
+.has-text-centered { text-align: center; }
+.has-text-right { text-align: right; }
+.has-text-primary { color: var(--color-primary) !important; }
+.mb-5 { margin-bottom: 1.5rem; }
+
+.input-base,
+.select-base select {
+    padding: 10px 15px;
+    border-radius: var(--border-radius);
+    font-size: 1rem;
+    border: 1px solid #ccc;
+    line-height: 1.2;
+}
+
+.btn {
+    cursor: pointer;
+    text-align: center;
+    border: 1px solid transparent;
+    transition: background-color 0.3s, transform 0.1s;
+    font-weight: 500;
+    padding: 10px 15px;
+    border-radius: var(--border-radius);
+    font-size: 1rem;
+    line-height: 1.2;
+}
+
+.btn-primary { 
+    background-color: var(--color-primary);
+    color: white;
+    border-color: var(--color-primary);
+}
+.btn-primary:hover {
+    background-color: #438a3d;
+    border-color: #438a3d;
+}
+
+.btn-secondary { 
+    background-color: var(--color-secondary);
+    color: white;
+    border-color: var(--color-secondary);
+}
+.btn-secondary:hover {
+    background-color: #0056b3;
+    border-color: #0056b3;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); 
+}
+
+.btn-light { 
+    background-color:#f07545;
+    color:white;
+    border: 1px solid #ccc;
+}
+.btn-light:hover {
+    background-color: #ffc400;
+}
+
+.btn-full-width {
+    width: 100%;
+}
+
+.tag {
+    display: inline-block;
+    padding: 4px 12px;
+    margin-right: 5px;
+    border-radius: 15px; 
+    font-size: 0.8rem;
+    font-weight: 500;
+}
+
+.card {
+    background-color: white;
+    border-radius: 6px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+.tag {
+    display: inline-block;
+    padding: 4px 12px;
+    border-radius: 15px; 
+    font-size: 0.8rem;
+    font-weight: 500;
+}
+
+.tag-info { background-color: #e6f7ff; color: #0088cc; } 
+.tag-dark { background-color: #f0f0f0; color: #555; } 
+.tag-primary { background-color: #e0f8e0; color: var(--color-primary); } 

@@ -1,0 +1,45 @@
+import express from 'express'
+import cors from 'cors';
+import path from 'path'
+import __dirname from './utils/pathUtils.js';
+import dotenv from 'dotenv';
+import {
+    staticMiddleware, 
+    urlencodedMiddleware, jsonMiddleware,
+    securityMiddleware, compressionMiddlewware,
+    rateLimitMiddleware, morganMiddleware
+} from './middlewares/middlewares.js'
+import router from './routes/routes.js'
+import Database from './config/db.js'
+
+//Carregar as variáveis de ambiente do arquivo .env
+dotenv.config();
+
+const app = express();
+const port = process.env.PORT
+app.use(express.json({ limit: '10mb' }));
+app.use(express.urlencoded({ limit: '10mb', extended: true }));
+//Conecta ao banco de dados MongoDB
+Database.connect();
+
+//Motor de template
+app.set('views', path.join(__dirname, 'views')); //Definindo a pasta do template EJS
+app.set('view engine', 'ejs'); //Definindo o motor de template EJS
+
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+
+//Registrando Middlewares
+app.use(staticMiddleware);
+app.use(urlencodedMiddleware);
+app.use(jsonMiddleware);
+app.use(securityMiddleware);
+app.use(compressionMiddlewware);
+//app.use(rateLimitMiddleware);
+app.use(morganMiddleware);
+app.use(cors());
+app.use(router);
+
+app.listen(port, () => {
+    console.log(`Servidor ativo rodando na porta ${port}`)
+});
