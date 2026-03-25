@@ -1,4 +1,4 @@
-# 🚀 API Infoeste (Backend)
+# 🚀 API Infoeste
 
 ## 1. Objetivo do Projeto
 
