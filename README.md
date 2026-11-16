@@ -1,102 +1,156 @@
-# 🚀 API Infoeste
+# 🎓 Infoeste v2: Catálogo de Cursos com Recomendações por IA
 
-## 1. Objetivo do Projeto
+Aplicação **full stack** para cadastro, gestão e inscrição em cursos de evento, com **recomendações personalizadas e geração de conteúdo usando o Google Gemini**. O repositório reúne o **front-end em Vue 3** e a **API REST em Node.js + Express + MongoDB**.
 
-Esta é a API RESTful do projeto **Infoeste**, um sistema completo para cadastro, gestão e recomendação de cursos e eventos.
+![Vue.js](https://img.shields.io/badge/Vue.js-3-4FC08D?logo=vuedotjs&logoColor=white)
+![Bulma](https://img.shields.io/badge/Bulma-CSS-00D1B2?logo=bulma&logoColor=white)
+![Axios](https://img.shields.io/badge/Axios-5A29E4?logo=axios&logoColor=white)
+![Node.js](https://img.shields.io/badge/Node.js-339933?logo=nodedotjs&logoColor=white)
+![Express](https://img.shields.io/badge/Express-4-000000?logo=express&logoColor=white)
+![MongoDB](https://img.shields.io/badge/MongoDB-Mongoose-47A248?logo=mongodb&logoColor=white)
+![Google Gemini](https://img.shields.io/badge/Google_Gemini-API-8E75B2?logo=googlegemini&logoColor=white)
 
-Construída com Node.js, Express e MongoDB, esta API serve como o cérebro da aplicação, lidando com a lógica de negócios, autenticação de usuários, gerenciamento de banco de dados e a integração direta com o módulo de Inteligência Artificial (Google Gemini) para assistênca e recomendações.
+## 📸 Screenshots
 
----
+> Capturadas rodando o projeto localmente com os dados de exemplo da pasta `imports/`.
 
-## ✨ Funcionalidades Implementadas
+| Login | Catálogo de cursos |
+|---|---|
+| ![Login](screenshots/login.png) | ![Catálogo](screenshots/catalogo-cursos.png) |
 
-O backend atualmente suporta três perfis principais (Usuário, Professor, Admin) através de um sistema de níveis.
+| Cards do catálogo | Detalhes do curso |
+|---|---|
+| ![Cards](screenshots/catalogo-cursos-cards.png) | ![Detalhes](screenshots/detalhes-curso.png) |
 
-### 👤 Usuário Comum
-* **Autenticação**: Cadastro (`/api/auth/cadastro`) e Login (`/api/auth/login`) seguros.
-* **Gerenciamento de Perfil**: O usuário pode atualizar suas próprias informações (`PUT /api/users/:id`), incluindo nome, email, proficiências e foto de perfil (enviada como Base64).
-* **Visualização de Cursos**: Acesso ao catálogo de cursos (`GET /api/cursos`) com filtros e paginação.
-* **Sistema de Inscrição**:
-    * Inscrever-se em cursos (`POST /api/inscricoes`), com validação de pré-requisitos e controle de vagas (resultando em "Inscrito" ou "Fila de Espera").
-    * Cancelar uma inscrição (`DELETE /api/inscricoes/:id`).
-    * Listar todos os seus cursos inscritos (`GET /api/users/:id/inscricoes`).
+| Admin: gerenciar cursos | Admin: novo curso com assistente de IA |
+|---|---|
+| ![Admin cursos](screenshots/admin-cursos.png) | ![Novo curso](screenshots/admin-novo-curso.png) |
 
-### 🤖 Módulo de Inteligência Artificial (Gemini)
-Esta é a funcionalidade central da API, dividida em duas frentes:
+## ✨ Funcionalidades
 
-1.  **Assistente de Administração (Para Professores/Admins):**
-    * **Geração de Conteúdo**: Cria descrições de cursos, listas de proficiências e conteúdo programático completo (ementas) sob demanda (`POST /api/gemini/descricao`, etc.).
+### 👤 Aluno
+- Cadastro e login por **CPF e senha**.
+- Perfil editável (nome, e-mail, proficiências e foto enviada em Base64).
+- **Catálogo de cursos** com busca, filtros (proficiências, local, faixa etária, horário, status) e paginação.
+- **Inscrição** com validação de **pré-requisitos** (proficiências do aluno) e controle de vagas: o status fica **"Inscrito"** ou **"Fila de Espera"**.
+- Cancelamento de inscrição e página **"Meus cursos"**.
+- **Avaliação** dos cursos.
+- **Recomendações por IA**: o Gemini cruza as proficiências do aluno, os pré-requisitos dos cursos e as inscrições atuais para sugerir cursos com uma explicação personalizada.
 
-2.  **Sistema de Recomendação Personalizada (Para Usuários):**
-    * **Rota Dedicada (`POST /api/recomendacoes`)**: Uma rota complexa que:
-        1.  Recebe o ID do usuário.
-        2.  Busca as **proficiências** do usuário.
-        3.  Busca os **pré-requisitos** de todos os cursos.
-        4.  Busca os **cursos em que o usuário já está inscrito**.
-        5.  Envia esses três conjuntos de dados para a IA.
-        6.  A IA (via *prompt engineering* rigoroso) **normaliza, filtra e ranqueia** os resultados, priorizando cursos cujos pré-requisitos exatos são atendidos e que o usuário ainda não fez.
-        7.  Retorna uma lista de recomendações com explicações personalizadas.
+### 👑 Administrador / professor
+- CRUD de **usuários** e de **cursos** (rotas do front protegidas para o nível `admin`).
+- **Assistente de IA** no cadastro de curso: gera descrição, conteúdo programático, proficiências, público-alvo e pré-requisitos.
+- Marcar curso como concluído, ocultar avaliações e gerar **resumo das avaliações com IA**.
+- Ao listar os cursos, os que já passaram da data de término são marcados como **Concluídos** automaticamente e as proficiências do curso são adicionadas ao perfil dos alunos inscritos.
 
-### 👑 Administrador
-* Possui todas as permissões de usuário.
-* **Gerenciamento de Usuários (CRUD)**: Acesso total ao `UserController` para criar, listar, editar e deletar usuários.
-* **Gerenciamento de Cursos (CRUD)**: Acesso total ao `CursoController` para criar, editar e deletar cursos.
-* Acesso às rotas de **Assistente de IA** para facilitar a criação de novos cursos.
+## 🛠️ Tecnologias
 
----
+| Front-end (`info-front-end-main`) | Back-end (`info-webservice-main`) |
+|---|---|
+| Vue 3 + Vue Router 4 | Node.js + Express 4 (ES Modules) |
+| Bulma, Font Awesome, Sass | MongoDB + Mongoose 8 |
+| Axios | Google Gemini (`@google/genai`) |
+| Vue CLI 5 | Helmet, CORS, compression, morgan, dotenv |
 
-## 🛠️ Tecnologias Utilizadas
+## 🔌 Endpoints da API
 
-* **Node.js**
-* **Express.js**: Para roteamento e middlewares.
-* **MongoDB**: Banco de dados NoSQL.
-* **Mongoose**: Para modelagem de dados e conexão com o MongoDB.
-* **Google Gemini API (`@google/genai`)**: Para todas as funcionalidades de IA.
-* **CORS**: Para permitir a comunicação com o frontend.
-* **Dotenv**: Para gerenciamento de variáveis de ambiente.
-* **Body-Parser**: Configurado com limite estendido (`10mb`) para aceitar o upload de fotos de perfil em Base64.
+Base: `http://localhost:3000`
 
----
+| Método | Rota | Descrição |
+|---|---|---|
+| POST | `/api/auth/cadastro` | Cadastro de usuário |
+| POST | `/api/auth/login` | Login (CPF e senha) |
+| GET | `/api/users` | Lista usuários |
+| GET | `/api/users/professores` | Lista professores |
+| GET / PUT / DELETE | `/api/users/:id` | Busca / atualiza / remove usuário |
+| POST | `/api/users` | Cria usuário |
+| GET | `/api/users/:id/inscricoes` | Cursos em que o usuário está inscrito |
+| GET | `/api/cursos` | Lista cursos (filtros e paginação) |
+| GET | `/api/cursos/tags` | Tags/proficiências distintas |
+| GET | `/api/cursos/instrutor/:instrutorId` | Cursos de um instrutor |
+| GET / PUT / DELETE | `/api/cursos/:id` | Busca / atualiza / remove curso |
+| POST | `/api/cursos` | Cria curso |
+| PATCH | `/api/cursos/:id/concluir` | Marca curso como concluído |
+| POST | `/api/inscricoes` | Inscreve usuário em curso |
+| GET | `/api/inscricoes/status/:cursoId/:usuarioId` | Status da inscrição |
+| GET | `/api/inscricoes/usuario/:usuarioId` | Inscrições do usuário |
+| DELETE | `/api/inscricoes/:id` | Cancela inscrição |
+| PATCH | `/api/inscricoes/:id/concluir` | Conclui o curso para o aluno |
+| POST | `/api/avaliacoes` | Cria avaliação |
+| GET | `/api/avaliacoes/curso/:cursoId` | Avaliações de um curso |
+| GET | `/api/avaliacoes/verificar/:cursoId/:usuarioId` | Verifica se o usuário já avaliou |
+| PATCH | `/api/avaliacoes/:id/ocultar` | Oculta/exibe avaliação |
+| POST | `/api/recomendacoes` | Recomendações personalizadas (IA) |
+| POST | `/api/gemini` | Chamada genérica ao Gemini |
+| POST | `/api/gemini/descricao` | Gera descrição do curso |
+| POST | `/api/gemini/proficiencias` | Gera proficiências |
+| POST | `/api/gemini/conteudo-programatico` | Gera conteúdo programático |
+| POST | `/api/gemini/publico-alvo` | Gera público-alvo |
+| POST | `/api/gemini/pre-requisitos` | Gera pré-requisitos |
+| POST | `/api/gemini/resumo-avaliacoes` | Gera resumo das avaliações |
+| POST | `/api/gemini/recomendacoes` | Recomendações de cursos via Gemini |
 
-## 📦 Instalação e Configuração
+## 📁 Estrutura do projeto
 
-1.  **Clone o repositório:**
-    ```bash
-    git clone [https://github.com/pedropenha/info-webservice.git](https://github.com/pedropenha/info-webservice.git)
-    cd info-webservice
-    ```
+```
+infoeste-course-platform/
+├── info-front-end-main/        # Front-end Vue 3
+│   └── src/
+│       ├── components/         # NavBar, CursoCard, FiltroCursos, IARecomenda...
+│       ├── router/             # Rotas e proteção das páginas de admin
+│       ├── services/api.js     # Axios (baseURL http://localhost:3000/api)
+│       └── views/              # Login, Catálogo, Detalhes, Perfil, Meus Cursos, Admin...
+└── info-webservice-main/       # API REST
+    ├── config/db.js            # Conexão MongoDB
+    ├── controllers/            # Auth, User, Curso, Inscricao, Avaliacao, Gemini, Recomendacao
+    ├── imports/                # Dados de exemplo (cursos.json, usuarios.json)
+    ├── middlewares/            # Helmet, compression, morgan...
+    ├── models/ + Schemas/      # Modelos Mongoose
+    ├── routes/                 # Rotas da API
+    ├── services/geminiAPI.js   # Integração com o Gemini
+    └── server.js
+```
 
-2.  **Instale as dependências:**
-    ```bash
-    npm install
-    ```
+## ▶️ Como executar
 
-3.  **Configure as Variáveis de Ambiente:**
-    Crie um arquivo `.env` na raiz do projeto e adicione as seguintes chaves.
+Pré-requisitos: **Node.js**, um **MongoDB** (local ou Atlas) e uma **chave da API do Gemini** (para os recursos de IA).
 
-    ```.env
-    # Porta em que o servidor irá rodar
-    PORT=3000
+### 1. API
 
-    # String de conexão do seu banco MongoDB
-    MONGODB_URI=mongodb://localhost:27017/infoest_db
+```bash
+git clone https://github.com/lukinha21/infoeste-course-platform.git
+cd infoeste-course-platform/info-webservice-main
+npm install
+```
 
-    # Chaves da API do Google Gemini
-    GEMINI_API_KEY=SUA_API_KEY_AQUI
-    GEMINI_MODEL=gemini-2.5-flash
-    ```
+Crie o arquivo `.env`:
 
-4.  **Inicie o servidor (modo de desenvolvimento):**
-    ```bash
-    npm start
-    ```
+```env
+PORT=3000
+MONGODB_URI=mongodb://localhost:27017/infoeste
+GEMINI_API_KEY=SUA_CHAVE_AQUI
+GEMINI_MODEL=gemini-2.5-flash
+```
 
-## 📍 Principais Endpoints da API
+```bash
+npm start
+```
 
-* `POST /api/auth/login`: Autentica um usuário.
-* `GET /api/cursos`: Lista todos os cursos (com filtros).
-* `PUT /api/users/:id`: Atualiza o perfil do usuário (usado pela página de perfil).
-* `GET /api/users/:id/inscricoes`: Busca todos os cursos de um usuário (usado pela página de perfil).
-* `POST /api/inscricoes`: Inscreve um usuário em um curso.
-* `DELETE /api/inscricoes/:id`: Cancela (desinscreve) um usuário de um curso.
-* `POST /api/recomendacoes`: Rota principal da IA para gerar recomendações personalizadas.
+Para ter dados de exemplo, importe `imports/usuarios.json` na coleção `users` e `imports/cursos.json` na coleção `cursos` (por exemplo, pelo MongoDB Compass).
+
+### 2. Front-end
+
+```bash
+cd ../info-front-end-main
+npm install
+npm run serve
+```
+
+Acesse **http://localhost:8080** (o front consome a API em `http://localhost:3000/api`).
+
+## 👨‍💻 Autor
+
+**Lucas Alexandre**, estudante de Sistemas de Informação na Unoeste
+
+- GitHub: [@lukinha21](https://github.com/lukinha21)
+- LinkedIn: [Lucas Silva](https://www.linkedin.com/in/lucas-silva-025583180)
