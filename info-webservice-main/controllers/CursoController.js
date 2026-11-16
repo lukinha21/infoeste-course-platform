@@ -1,7 +1,7 @@
 import CursoModel from "../Schemas/CursoSchema.js";  
 import InscricaoModel from "../Schemas/InscricaoSchema.js";
 import UserController from "./UserController.js";
-import Curso from '../Models/Curso.js';
+import Curso from '../models/Curso.js';
 import mongoose from 'mongoose';
 class CursoController {
 
